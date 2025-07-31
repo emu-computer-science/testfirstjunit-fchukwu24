@@ -44,9 +44,42 @@ public class Date
     }
     
     public Date addOneDay(){
-    	   System.out.println("Date.addOneDay() is not yet implemented.");
-		   return null;
+    	int day = getDay();
+    	int month = getMonth();
+    	int year = getYear();
+    	day +=1;
+    	switch (month) {
+	    	case 1,3,5,7,8,10: 
+	    		if(day >= 32) {
+	    			month+=1;
+	    			day=1;
+	    		}
+	    	break;
+	    	case 12:
+	    		if(day >= 32) {
+	    			day=1;
+	    			month = 1;
+	    			year+=1;
+	    		}
+	    	break;
+	    	case 2:
+	    		if(day >= 29) {
+	    			day=1;
+	    			month+=1;
+	    		}
+	    	break;
+	    	case 4,6,9,11:
+	    		if(day >= 31) {
+	    			day=1;
+	    			month+=1;
+	    		}
+	    	break;
     	}
+    	
+    	setDate(month, day, year);
+    	System.out.println(toString());
+		return this;
+    }
 
 
     public void setDate(int monthInt, int day, int year)
@@ -74,8 +107,7 @@ public class Date
         }
         else
         {
-            System.out.println("Fatal Error in setDate(String,int, int)");
-            System.exit(0);
+            return;
         }
     }
 
@@ -166,10 +198,15 @@ public class Date
         return (month + " " + day + ", " + year);
     }
 
-    public boolean equals(Date otherDate)
+    @Override
+    public boolean equals(Object obj)
     {
-        return ( (month.equals(otherDate.month))
-                  && (day == otherDate.day) && (year == otherDate.year) );
+    	if (this == obj) return true;             
+        if (obj == null || getClass() != obj.getClass()) return false;
+        
+    	Date otherDate = (Date) obj;
+        return ( (getMonth() == (otherDate.getMonth()))
+                  && (day == otherDate.getDay()) && (year == otherDate.getYear()) );
     }
 
     public boolean precedes(Date otherDate)
@@ -211,9 +248,16 @@ public class Date
 
     private boolean dateOK(String monthString, int dayInt, int yearInt)
     {
-        return ( monthOK(monthString) &&
-                 (dayInt >= 1) && (dayInt <= 31) &&
-                 (yearInt >= 1000) && (yearInt <= 9999) );
+    	if(!monthOK(monthString)) {
+    		return false;
+    	}
+    	if(!((yearInt >= 1000) && (yearInt <= 9999) )) {
+    		return false;
+    	}
+    	int monthIndex = getMonthIndex(monthString);
+        int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+        return (dayInt >= 1) && (dayInt <= daysInMonth[monthIndex]);
     }
 
     private boolean monthOK(String month)
@@ -224,6 +268,24 @@ public class Date
                 month.equals("July") || month.equals("August") ||
                 month.equals("September") || month.equals("October") ||
                 month.equals("November") || month.equals("December") );
+    }
+
+    private int getMonthIndex(String m) {
+        switch (m.toLowerCase()) {
+            case "january": return 0;
+            case "february": return 1;
+            case "march": return 2;
+            case "april": return 3;
+            case "may": return 4;
+            case "june": return 5;
+            case "july": return 6;
+            case "august": return 7;
+            case "september": return 8;
+            case "october": return 9;
+            case "november": return 10;
+            case "december": return 11;
+            default: return -1; // invalid month
+        }
     }
 
     private String monthString(int monthNumber)

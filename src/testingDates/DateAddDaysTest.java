@@ -10,6 +10,11 @@ public class DateAddDaysTest {
 	public void stayInSameMonth() {
 		startDate.setDate(2019);
 		assertEquals(new Date(1,2,2019), startDate.addOneDay());
+		
+		startDate = new Date("June", 10, 2019);
+		startDate.addOneDay();
+		assertEquals(new Date("June", 11, 2019), startDate);
+
 	}
 
 	@Test
