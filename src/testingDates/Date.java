@@ -42,6 +42,12 @@ public class Date
         day = aDate.day;
         year = aDate.year;
     }
+    
+    public Date addOneDay(){
+    	   System.out.println("Date.addOneDay() is not yet implemented.");
+		   return null;
+    	}
+
 
     public void setDate(int monthInt, int day, int year)
     {
@@ -88,6 +94,7 @@ public class Date
         else
             this.year = year;
     }
+    
     public void setMonth(int monthNumber)
     {
         if ((monthNumber <= 0) || (monthNumber > 12))
@@ -192,6 +199,7 @@ public class Date
             else
                 System.out.println("Illegal date. Reenter input.");
          }
+        keyboard.close();
     }
 
     private boolean dateOK(int monthInt, int dayInt, int yearInt)
